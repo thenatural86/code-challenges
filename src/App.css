@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+  margin: auto;
+  max-width: 800px;
+  padding-top: 1rem;
+  background-color: aqua;
+}
+
+.Top {
+  text-align: center;
+  margin: auto;
+  max-width: 800px;
+  padding-top: 1rem;
+  background-color: blueviolet;
+}
