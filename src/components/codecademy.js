@@ -8,7 +8,6 @@ import './styles.css'
 
 const App = () => {
   const [quizNumber, setQuizNumber] = useState(0)
-  const [questionNumber, setQuestionNumber] = useState(0)
 
   const quiz = quizzes.map((item, idx) => {
     return (
@@ -24,17 +23,40 @@ const App = () => {
 }
 
 const Quiz = (item) => {
+  const [questionNumber, setQuestionNumber] = useState(0)
+
   const { title, questions } = item
-  const question = questions.map((item, idx) => {
+
+  const questionText = questions.map((item, idx) => {
     return <p key={idx}>{item.text}</p>
   })
 
   console.log(questions)
 
+  const correct = questions[questionNumber].correctAnswer
+  const wrongAnswers = questions[questionNumber].incorrectAnswers
+
+  const answers = [...wrongAnswers, correct]
+  // console.log(answers);
+
+  const answer = answers.map((item, idx) => {
+    const letters = ['A.', 'B.', 'C.', 'D.']
+    console.log(letters[idx])
+    let place = letters[idx]
+    return (
+      <p key={idx}>
+        {place} {item}
+      </p>
+    )
+  })
+
   return (
     <div>
-      <div>{title}</div>
-      <div>{question}</div>
+      <h4>{title}</h4>
+      <div>{questionText[questionNumber]}</div>
+      <div>
+        <span>{answer}</span>
+      </div>
     </div>
   )
 }
