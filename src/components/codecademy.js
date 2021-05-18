@@ -36,12 +36,20 @@ const Quiz = (item) => {
   const correct = questions[questionNumber].correctAnswer
   const wrongAnswers = questions[questionNumber].incorrectAnswers
 
-  const answers = [...wrongAnswers, correct]
-  // console.log(answers);
+  let answers = [...wrongAnswers]
+  const tempIndex = Math.floor(Math.random() * 4)
+
+  if (tempIndex === 3) {
+    answers.push(correct)
+  } else {
+    answers.push(answers[tempIndex])
+    answers[tempIndex] = correct
+  }
+
+  console.log(answers)
 
   const answer = answers.map((item, idx) => {
     const letters = ['A.', 'B.', 'C.', 'D.']
-    console.log(letters[idx])
     let place = letters[idx]
     return (
       <p key={idx}>
@@ -50,13 +58,15 @@ const Quiz = (item) => {
     )
   })
 
+  const selectAnswer = (e) => {
+    console.log('hello', e.target.value)
+  }
+
   return (
     <div>
       <h4>{title}</h4>
       <div>{questionText[questionNumber]}</div>
-      <div>
-        <span>{answer}</span>
-      </div>
+      <div onClick={(e) => selectAnswer(e)}>{answer}</div>
     </div>
   )
 }
