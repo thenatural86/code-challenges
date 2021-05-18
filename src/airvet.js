@@ -1,36 +1,51 @@
-import React, { useEffect, useState } from 'react'
+import './styles.css'
+import { useEffect, useState, useCallback } from 'react'
 
-export default function App() {
+const App = () => {
   const [users, setUsers] = useState([])
+  const [nameInput, setNameInput] = useState('')
+  const [person, setPerson] = useState([])
 
-  const fetchData = () => {
+  const fetchUsers = useCallback(() => {
     fetch('https://randomuser.me/api/')
-      .then((resp) => resp.json())
-      .then((data) => {
-        setUsers([...users, ...data.results])
-      })
-  }
-
-  useEffect(() => {
-    fetchData()
+      .then((response) => response.json())
+      .then((data) => setUsers((users) => [...users, ...data.results]))
   }, [])
 
-  console.log(users)
+  useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
+
+  const content = users.map((user, index) => {
+    const { name, picture } = user
+    return (
+      <div key={index}>
+        <h3>{name.first}</h3>
+        <img src={picture.thumbnail} alt='' />
+      </div>
+    )
+  })
+
+  const nameInputHandler = (e) => {
+    setNameInput(e.target.value)
+  }
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault()
+    setPerson([...person, nameInput])
+    setNameInput('')
+  }
 
   return (
     <div className='App'>
-      <div>
-        {users &&
-          users.map((user, index) => {
-            return (
-              <div key={index}>
-                <h5>{user.name.first}</h5>
-                <img src={user.picture.thumbnail} alt='' />
-              </div>
-            )
-          })}
-      </div>
-      <button onClick={() => fetchData()}>Add User</button>
+      <button onClick={fetchUsers}>Get new User</button>
+      <form onSubmit={formSubmitHandler}>
+        <input type='text' value={nameInput} onChange={nameInputHandler} />
+      </form>
+      {person + ' '}
+      {users && <div>{content}</div>}
     </div>
   )
 }
+
+export default App
